@@ -1,0 +1,37 @@
+{
+  "trivago": {
+    "urlKey": "https://magazine.trivago.com",
+    "elementTimeOut": 10,
+    "elements": {
+      "contact": "//*[@id=\"footer-main\"]/div[1]/div[3]/div[1]/div[2]/a",
+      "search button": "//*[@id=\"header\"]/div/div/div[2]",
+      "search": ".search-input",
+      "accept cookie": "#onetrust-accept-btn-handler",
+      "newsletter title": ".newsletter-title",
+      "newsletter mail": ".et-email",
+      "newsletter submit": ".submit",
+      "newsletter submitted": ".submitted",
+      "menu": ".nav-icon",
+      "destinations": "//*[@id=\"menu\"]/div/div/div[1]/div[1]/div/div",
+      "southwest": "//*[@id=\"menu\"]/div/div/div[1]/div[2]/div/div[1]/div[2]/a/div/div[2]"
+    }
+  },
+  "trivago contact": {
+    "urlKey": "https://magazine.trivago.com/contact/",
+    "elementTimeOut": 10,
+    "elements": {
+      "message": ".contact-msg",
+      "name": "//*[@id=\"app\"]/div[3]/div/div/div[1]/div[3]/div[1]/input",
+      "mail": "#contact-email",
+      "submit": ".contact-submit",
+      "confirm": "#confirm",
+      "search result" : ".section-title"
+    }
+  },
+  "southwest page": {
+    "urlKey": "https://magazine.trivago.com/destination/southwest/",
+    "elementTimeOut": 10,
+    "elements": {
+    }
+  }
+}
