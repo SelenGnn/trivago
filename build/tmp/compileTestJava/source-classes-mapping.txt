@@ -1,6 +1,6 @@
 parser/Parser.java
  parser.Parser
-web/steps/Steps.java
- web.steps.Steps
 RunCucumberTests.java
  RunCucumberTests
+web/steps/Steps.java
+ web.steps.Steps

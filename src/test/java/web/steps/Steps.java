@@ -7,6 +7,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.*;
@@ -14,9 +15,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import parser.Parser;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -90,35 +92,53 @@ public class Steps {
         }
     }
 
-    @And("I switch \"([^\"]*)\" page")
-    public void switchPage(String pageKey) throws IOException, ParseException {
-        parser.setPageKey(pageKey);
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
-        System.out.println("URL : " + driver.getCurrentUrl());
-    }
-
-    @And("I see \"([^\"]*)\" page")
-    public void seePage(String pageKey) throws IOException, ParseException {
-        parser.setPageKey(pageKey);
-        Assert.assertEquals(driver.getCurrentUrl(), parser.getPageObject("urlKey"));
-    }
 
     @And("I wait for {int} seconds")
     public void waitForSeconds(int seconds) throws InterruptedException {
         Thread.sleep(seconds * SECOND_AS_MILLIS);
     }
 
-    @Then("I see \"([^\"]*)\" text \"([^\"]*)\"")
-    public void iSeeText(String text, String elementKey) throws IOException, ParseException {
-        String originalElementText = getElement(elementKey).getText();
-        String modifiedElementText = originalElementText.replaceAll(NEW_LINE_STRING, EMPTY_STRING).replaceAll(DOUBLE_QUOTE_STRING, EMPTY_STRING);
-        Assert.assertEquals(text, modifiedElementText);
-    }
 
     @And("I press enter key to \"([^\"]*)\"")
     public void pressEnter(String elementKey) throws IOException, ParseException {
         getElement(elementKey).sendKeys(Keys.ENTER);
+    }
+
+
+    @Then("I verify that the list of \"([^\"]*)\" displays all hotels featured in the article")
+    public void iVerifyThatTheListOfDisplaysAllHotelsFeaturedInTheArticle(String elementKey) {
+        final List<WebElement> results = driver.findElements(By.xpath("//*[@id=\"app\"]/div[3]/article/div[1]/div[2]/div[1]/div[3]/div/ol/li"));
+        final List<WebElement> hotels = driver.findElements(By.className("destination-and-hotel-box"));
+        if (results == hotels) {
+            for (int j = 1; j <= hotels.size(); j++) {
+                driver.findElement(By.xpath("(" + "//*[@class=\"destination-and-hotel-box\"])[" + j + "]")).isDisplayed();
+            }
+        }
+    }
+
+    @And("I verify that there are no broken links in the article")
+    public void iVerifyThatThereAreNoBrokenLinksInTheArticle() {
+        driver.getCurrentUrl();
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+        Iterator<WebElement> it = links.iterator();
+        while (it.hasNext()) {
+            String url = it.next().getAttribute("href");
+            System.out.println(url);
+            if (url == null || url.isEmpty()) {
+                System.out.println("URL is broken");
+                continue;
+            }
+            else{
+                System.out.println("URL verified");
+            }
+        }
+    }
+
+    @Then("I verify that the Displayed Number Search Results is correct")
+    public void iVerifyThatTheDisplayedNumberSearchResultsIsCorrect() {
+        final List<WebElement> results = driver.findElements(By.xpath("//*[@id=\"search\"]/div[1]/div[8]/section/div/div"));
+        for (int i = 1; i <= results.size(); i++)
+            driver.findElement(By.xpath("//*[@id=\"search\"]/div[1]/div[8]/section/div/div[" + i + "]")).isDisplayed();
     }
 }
 
